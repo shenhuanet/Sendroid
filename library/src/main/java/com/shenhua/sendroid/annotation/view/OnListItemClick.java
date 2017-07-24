@@ -1,6 +1,6 @@
 package com.shenhua.sendroid.annotation.view;
 
-import android.view.View;
+import android.widget.AdapterView;
 
 import com.shenhua.sendroid.annotation.view.inner.ListenerClass;
 
@@ -10,17 +10,20 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Created by shenhua on 2017-07-21.
+ * Created by shenhua on 2017-07-24-0024.
  * Email shenhuanet@126.com
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 @ListenerClass(
-        targetType = View.OnLongClickListener.class,
-        setter = "setOnLongClickListener",
-        callback = "onLongClick"
+        targetType = AdapterView.OnItemClickListener.class,
+        setter = "setOnItemClickListener",
+        callback = "onItemClick"
 )
-public @interface OnLongClick {
+/**
+ * void onItemClick(AdapterView parent, View view, int position, long id);
+ */
+public @interface OnListItemClick {
 
-    int[] value() default {View.NO_ID};
+    int value();
 }

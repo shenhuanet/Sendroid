@@ -1,4 +1,4 @@
-package com.shenhua.sendroid.annotation.view;
+package com.shenhua.sendroid.annotation.view.inner;
 
 import android.view.View;
 import android.widget.AdapterView;

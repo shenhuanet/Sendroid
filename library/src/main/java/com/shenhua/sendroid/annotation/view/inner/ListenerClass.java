@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ListenerClass {
 
-    Class targerType();
+    Class targetType();
 
     String setter();
 

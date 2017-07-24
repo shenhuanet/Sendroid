@@ -16,7 +16,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 @ListenerClass(
-        targerType = View.OnClickListener.class,
+        targetType = View.OnClickListener.class,
         setter = "setOnClickListener",
         callback = "onClick"
 )

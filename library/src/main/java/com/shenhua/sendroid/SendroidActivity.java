@@ -9,10 +9,11 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 
 import com.shenhua.sendroid.annotation.view.BindView;
-import com.shenhua.sendroid.annotation.view.MethodIntercepter;
-import com.shenhua.sendroid.annotation.view.ViewListener;
-import com.shenhua.sendroid.annotation.view.ViewOption;
+import com.shenhua.sendroid.annotation.view.OnRecyclerItemClick;
+import com.shenhua.sendroid.annotation.view.Select;
+import com.shenhua.sendroid.annotation.view.inner.ViewListener;
 import com.shenhua.sendroid.annotation.view.inner.ListenerClass;
+import com.shenhua.sendroid.annotation.view.inner.MethodIntercepter;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -56,51 +57,57 @@ public class SendroidActivity extends AppCompatActivity {
                     if (bindView != null) {
                         int viewId = bindView.viewId();
                         field.set(object, view.findViewById(viewId));
-//                        viewListener(object, field, bindView.onClick(), ViewOption.Click);
-//                        viewListener(object, field, bindView.onItemClick(), ViewOption.ItemClick);
-//                        viewListener(object, field, bindView.onLongClick(), ViewOption.LongClick);
-//                        Select select = bindView.select();
-//                        if (!TextUtils.isEmpty(select.onSelected())) {
-//                            Object obj = field.get(object);
-//                            if (obj instanceof View) {
-//                                ((AbsListView) obj).setOnItemSelectedListener(new ViewListener(obj)
-//                                        .select(select.onSelected()).unSelect(select.unSelected()));
-//                            }
-//                        }
+                    }
+                    Select select = field.getAnnotation(Select.class);
+                    if (select != null) {
+                        if (!TextUtils.isEmpty(select.onSelected())) {
+                            if (object instanceof View) {
+                                ((AbsListView) object).setOnItemSelectedListener(
+                                        new ViewListener(object).select(select.onSelected())
+                                                .unSelect(select.unSelected()));
+                            }
+                        }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         }
+        viewClickListener(object, view);
+    }
 
+    private static void viewClickListener(Object object, View view) {
         Method[] methods = object.getClass().getDeclaredMethods();
         if (methods != null && methods.length > 0) {
             for (Method method : methods) {
                 Annotation[] annotations = method.getAnnotations();
                 for (Annotation annotation : annotations) {
-                    Class<? extends Annotation> annotationType = annotation.annotationType();
-                    if (annotationType != null) {
-                        ListenerClass event = annotationType.getAnnotation(ListenerClass.class);
-                        if (event != null) {
-                            String callback = event.callback();
-                            Class type = event.targerType();
-                            String setLister = event.setter();
+                    Class<? extends Annotation> type = annotation.annotationType();
+                    if (type != null) {
+                        ListenerClass listener = type.getAnnotation(ListenerClass.class);
+                        if (listener != null) {
+                            String callback = listener.callback();
+                            Class target = listener.targetType();
+                            String setListener = listener.setter();
                             try {
-                                Method declaredMethod = annotationType.getDeclaredMethod("value");
+                                Method declaredMethod = type.getDeclaredMethod("value");
                                 int[] values = (int[]) declaredMethod.invoke(annotation);
                                 MethodIntercepter intercepter = new MethodIntercepter(object);
                                 intercepter.add(callback, method);
-                                Proxy proxy = (Proxy) Proxy.newProxyInstance(type.getClassLoader(),
-                                        new Class[]{type}, intercepter);
+                                Proxy proxy = (Proxy) Proxy.newProxyInstance(target.getClassLoader(),
+                                        new Class[]{target}, intercepter);
                                 for (int valutesId : values) {
                                     View v = view.findViewById(valutesId);
-                                    Method listener = v.getClass().getMethod(setLister, type);
-                                    listener.invoke(v, proxy);
+                                    Method listenerMethod = v.getClass().getMethod(setListener, target);
+                                    listenerMethod.invoke(v, proxy);
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
+                        }
+                        OnRecyclerItemClick recyclerListener = type.getAnnotation(OnRecyclerItemClick.class);
+                        if (recyclerListener != null) {
+
                         }
                     }
                 }
@@ -108,29 +115,4 @@ public class SendroidActivity extends AppCompatActivity {
         }
     }
 
-    private static void viewListener(Object object, Field field, String type, ViewOption option) throws Exception {
-        if (!TextUtils.isEmpty(type) && type.trim().length() > 0) {
-            Object obj = field.get(object);
-            switch (option) {
-                case Click:
-                    if (obj instanceof View) {
-                        ((View) obj).setOnClickListener(new ViewListener(object).click(type));
-                    }
-                    break;
-                case ItemClick:
-                    if (obj instanceof AbsListView) {
-                        ((AbsListView) obj).setOnItemClickListener(new ViewListener(object).itemClick(type));
-                    }
-//                if (obj instanceof RecyclerView){
-//
-//                }
-                    break;
-                case LongClick:
-                    if (obj instanceof View) {
-                        ((View) obj).setOnLongClickListener(new ViewListener(object).longClick(type));
-                    }
-                    break;
-            }
-        }
-    }
 }

@@ -8,6 +8,7 @@ import android.widget.Toast;
 import com.shenhua.sendroid.SendroidActivity;
 import com.shenhua.sendroid.annotation.view.BindView;
 import com.shenhua.sendroid.annotation.view.OnClick;
+import com.shenhua.sendroid.annotation.view.OnLongClick;
 
 public class MainActivity extends SendroidActivity {
 
@@ -36,4 +37,9 @@ public class MainActivity extends SendroidActivity {
         }
     }
 
+    @OnLongClick(R.id.btn2)
+    boolean ck(View view) {
+        Toast.makeText(this, "长按", Toast.LENGTH_SHORT).show();
+        return true;
+    }
 }

@@ -1,4 +1,4 @@
-package com.shenhua.sendroid.annotation.view;
+package com.shenhua.sendroid.annotation.view.inner;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
