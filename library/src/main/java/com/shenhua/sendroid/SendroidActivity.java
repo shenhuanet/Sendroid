@@ -55,7 +55,7 @@ public class SendroidActivity extends AppCompatActivity {
                     }
                     BindView bindView = field.getAnnotation(BindView.class);
                     if (bindView != null) {
-                        int viewId = bindView.viewId();
+                        int viewId = bindView.value();
                         field.set(object, view.findViewById(viewId));
                     }
                     Select select = field.getAnnotation(Select.class);

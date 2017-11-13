@@ -27,5 +27,24 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:recyclerview-v7:25.3.1'
     testCompile 'junit:junit:4.12'
+    compile 'com.github.bumptech.glide:glide:3.7.0'
 }
+
+ext {
+    libraryName = 'sendroid'
+    libraryVersion = '1.0.0'
+    libraryDescription = 'A fast android develop architecture.'
+    siteUrl = 'https://github.com/shenhuanet/Sendroid'
+    gitUrl = 'https://github.com/shenhuanet/Sendroid.git'
+
+    bintrayRepo = 'maven'
+    bintrayGroupName = 'shenhuanetos'
+    publishedGroupId = 'com.shenhua.libs'
+    developerId = 'shenhua'
+    developerName = 'shenhua'
+    developerEmail = 'shenhuanet@126.com'
+}
+apply from: 'https://raw.githubusercontent.com/shenhuanet/JCenter/master/install.gradle'
+apply from: 'https://raw.githubusercontent.com/shenhuanet/JCenter/master/bintray.gradle'

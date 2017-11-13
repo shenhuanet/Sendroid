@@ -11,5 +11,7 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface RuntimePermission {
+public @interface RuntimePermissionGranted {
+
+    int value();
 }

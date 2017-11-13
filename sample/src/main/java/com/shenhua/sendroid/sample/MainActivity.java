@@ -2,6 +2,7 @@ package com.shenhua.sendroid.sample;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -12,10 +13,10 @@ import com.shenhua.sendroid.annotation.view.OnLongClick;
 
 public class MainActivity extends SendroidActivity {
 
-    @BindView(viewId = R.id.tv)
+    @BindView(R.id.tv)
     TextView textView;
-//    @BindView(viewId = R.id.btn, onClick = "")
-//    Button button;
+    @BindView(R.id.imageView)
+    ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +34,10 @@ public class MainActivity extends SendroidActivity {
                 break;
             case R.id.btn2:
                 Toast.makeText(this, "点我干嘛222222", Toast.LENGTH_SHORT).show();
+//                Glide.with(this).load("https://gss0.baidu.com/94o3dSag_xI4khGko9WTAnF6hhy/zhidao/wh%3D450%2C600/sign=a99a10b771ec54e741b9121a8c08b766/42166d224f4a20a4ce86a14e9a529822730ed09b.jpg")
+//                        .asGif()
+//                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+//                        .into(imageView);
                 break;
         }
     }
